@@ -8,6 +8,9 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\Books\BookStoreRequest;
 use App\Http\Requests\Books\BookUpdateRequest;
+use App\Http\Requests\Books\BookReservationRequest;
+
+
 
 use App\Models\Book;
 use App\Http\Services\BookService;
@@ -112,6 +115,21 @@ class BooksController extends Controller
     public function destroy($id)
     {
         $result = $this->BookService->destroyBook($id);
+
+        return $this->successResponse($result);
+    }
+
+    /**
+     * Make reservation of the specified resource in storage.
+     *
+     * @param  \App\Models\Book  $books
+     * @return \Illuminate\Http\Response
+     */
+    public function reservation(BookReservationRequest $request, $id)
+    {
+        $data = $request->only(['user_id']);
+
+        $result = $this->BookService->reserveBook($data, $id);
 
         return $this->successResponse($result);
     }

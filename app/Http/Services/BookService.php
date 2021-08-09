@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Repositories\BookRepository;
+use App\Http\Repositories\UserBookRepository;
 
 class BookService
 {
@@ -16,15 +17,24 @@ class BookService
     */
     protected $BookRepository;
 
+    /**
+     * @var $UserBookRepository
+    */
+    protected $UserBookRepository;
+
+
 
     /**
      * BookService constructor.
      *
      * @param BookRepository $BookRepository
+     * @param UserBookRepository $UserBookRepository
+     * @param UserRepository $UserRepository
      */
-    public function __construct(BookRepository $BookRepository)
+    public function __construct(BookRepository $BookRepository, UserBookRepository $UserBookRepository)
     {
         $this->BookRepository = $BookRepository;
+        $this->UserBookRepository = $UserBookRepository;
     }
 
     /**
@@ -45,6 +55,7 @@ class BookService
      */
     public function storeBook($data)
     {
+        $result = null;
         DB::beginTransaction();
         Log::info('Crear libro');
         try {
@@ -80,6 +91,7 @@ class BookService
      */
     public function updateBook($data, $id)
     {
+        $result = null;
         DB::beginTransaction();
         Log::info('Actualizar libro');
         try {
@@ -103,11 +115,44 @@ class BookService
      */
     public function destroyBook($id)
     {
+        $result = null;
         DB::beginTransaction();
         Log::info('Eliminar libro');
         try {
             $this->BookRepository->destroyBook($id);
             $result = 'Libro eliminado con éxito.';
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::info($e->getMessage());
+
+            throw new InvalidArgumentException($e->getMessage());
+        }
+        DB::commit();
+
+        return $result;
+    }
+
+    /**
+     * Reserve Book
+     *
+     * @param array $data
+     * @param integer $id
+     * @return String
+     */
+    public function reserveBook($data, $id)
+    {
+        $result = null;
+        DB::beginTransaction();
+        Log::info('Reservar libro');
+        try {
+            $book = $this->BookRepository->showBook($id);
+            $data['cost'] = $book->price;
+            $reservation = $this->UserBookRepository->storeReservation($data, $id);
+            $this->BookRepository->updateBook(['quantity' => $book->quantity - 1], $id);
+            auth()->user()->update(['account_balance' => auth()->user()->account_balance - $book->price]);
+            $result['reservation'] = $reservation;
+            $result['user'] =  auth()->user();
+            $result['message'] = 'Reservación realizada con éxito.';
         } catch (Exception $e) {
             DB::rollBack();
             Log::info($e->getMessage());
