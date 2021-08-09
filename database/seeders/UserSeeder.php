@@ -30,10 +30,11 @@ class UserSeeder extends Seeder
             'role_id'  => $role['admin']
         ]);
         User::create([
-            'name'     => 'Reader',
-            'email'    => 'reader@bookstore.com',
-            'password' => \Hash::make('123456789'),
-            'role_id'  => $role['reader']
+            'name'              => 'Reader',
+            'email'             => 'reader@bookstore.com',
+            'password'          => \Hash::make('123456789'),
+            'account_balance'   => 1000,
+            'role_id'           => $role['reader']
         ]);
         User::create([
             'name'     => 'Author',

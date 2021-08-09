@@ -10,23 +10,23 @@ trait ApiResponse
     /**
      * Build a success response
      * @param string|array $data
-     * @param int $code
+     * @param int $status
      * @return \Illuminate\Http\JsonResponse
      */
-    public function successResponse($data, $code = Response::HTTP_OK)
+    public function successResponse($data, $status = Response::HTTP_OK)
     {
-        return response()->json(['data' => $data], $code);
+        return response()->json(['data' => $data], $status);
     }
 
 
     /**
      * Build a error response
      * @param string $message
-     * @param int $code
+     * @param int $status
      * @return \Illuminate\Http\JsonResponse
      */
-    public function errorResponse($message, $code)
+    public function errorResponse($message, $status)
     {
-        return response()->json(['error' => $message, 'code' => $code], $code);
+        return response()->json(['error' => $message, 'status' => $status], $status);
     }
 }

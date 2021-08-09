@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BooksController;
 
 /*
@@ -15,9 +16,12 @@ use App\Http\Controllers\Api\BooksController;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+// Authentication
+
+Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
 
- Route::resource('books', BooksController::class, [ 'except' => ['create', 'edit'], ])->name('*', 'books');
+// Books
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::resource('books', BooksController::class, [ 'except' => ['create', 'edit'], ])->name('*', 'books');
+});

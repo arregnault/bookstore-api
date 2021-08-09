@@ -45,10 +45,10 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (HttpException $e, $request) {
-            $code = $e->getStatusCode();
-            $message = Response::$statusTexts[$code];
+            $status = $e->getStatusCode();
+            $message = Response::$statusTexts[$status];
             Log::info($e->getMessage());
-            return $this->errorResponse($message, $code);
+            return $this->errorResponse($message, $status);
         });
         $this->renderable(function (ModelNotFoundException $e, $request) {
             $model = strtolower(class_basename($e->getModel()));
