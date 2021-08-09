@@ -20,4 +20,4 @@ use App\Http\Controllers\Api\BooksController;
 // });
 
 
- Route::resource('books', BooksController::class, [ 'except' => ['create', 'edit'], ]);
+ Route::resource('books', BooksController::class, [ 'except' => ['create', 'edit'], ])->name('*', 'books');

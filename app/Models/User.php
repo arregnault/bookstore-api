@@ -40,7 +40,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'id'                => 'integer',
+        'id'                => 'string',
         'name'              => 'string',
         'description'       => 'string',
         'role_id'           => 'integer',
