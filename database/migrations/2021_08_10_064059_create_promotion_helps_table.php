@@ -17,6 +17,7 @@ class CreatePromotionHelpsTable extends Migration
             $table->id();
             $table->decimal('amount', 5, 2)->comment('Amount');
             $table->decimal('collected', 5, 2)->default(0)->comment('Collected');
+            $table->boolean('is_bankable')->default(0)->comment('Eligible for Funding');
             $table->foreignId('book_id')->constrained('books')->onUpdate('cascade')->onDelete('cascade')->comment('Book');
             $table->timestamps();
         });

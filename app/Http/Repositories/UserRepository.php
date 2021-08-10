@@ -30,6 +30,7 @@ class UserRepository
     public function getAll($data = [])
     {
         $records = $this->user->filterByRole($data['role'] ?? null)
+                                ->filterById($data['user_id'] ?? null)
                                 ->when($data['pluck'] ?? null, function ($query, $pluck) {
                                     return $query->pluck($pluck);
                                 }, function ($query) {

@@ -61,4 +61,19 @@ class PromotionHelpUser extends Model
     {
         return $this->belongsTo(PromotionHelpUser::class, 'promotion_help_id', 'id');
     }
+
+    /**
+     * Filter books by promotion id
+     *
+     * @var query Eloquent Query
+     * @var user_id   Promotion Id
+     * @var strict Restriction flag
+     */
+    public function scopeFilterByPromotion($query, $promotion_help_id = null, $strict = false)
+    {
+        if (isset($promotion_help_id) || $strict) {
+            return $query->where('promotion_help_id', $promotion_help_id);
+        }
+        return $query;
+    }
 }

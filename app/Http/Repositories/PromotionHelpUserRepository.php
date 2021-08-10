@@ -27,9 +27,14 @@ class PromotionHelpUserRepository
      *
      * @return Collection $records
      */
-    public function getAll()
+    public function getAll($data = [])
     {
-        $records = $this->promotionHelpUser->get();
+        $records = $this->promotionHelpUser->filterByPromotion($data['promotion_help_id'] ?? null)
+                                ->when($data['pluck'] ?? null, function ($query, $pluck) {
+                                    return $query->pluck($pluck);
+                                }, function ($query) {
+                                    return $query->get();
+                                });
         return $records;
     }
 

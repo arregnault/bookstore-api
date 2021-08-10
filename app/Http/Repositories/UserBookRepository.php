@@ -27,7 +27,7 @@ class UserBookRepository
      *
      * @return Collection $records
      */
-    public function getAll()
+    public function getAll($data = [])
     {
         $records = $this->userbook->get();
         return $records;

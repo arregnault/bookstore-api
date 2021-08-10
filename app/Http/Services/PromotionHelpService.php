@@ -11,7 +11,6 @@ use App\Http\Repositories\PromotionHelpRepository;
 use App\Http\Repositories\BookRepository;
 use App\Http\Repositories\UserRepository;
 use App\Http\Repositories\PromotionHelpUserRepository;
-
 use App\Events\NewIdeasPromotionEvent;
 
 class PromotionHelpService
@@ -119,7 +118,7 @@ class PromotionHelpService
             $collected =  $promotion->collected + $data['amount'];
             $is_active = $collected >= $promotion->amount ? true : false;
 
-            if ($collected >= $promotion->amount) {
+            if ($promotion->collected >= $promotion->amount) {
                 throw new InvalidArgumentException('Esta promoción ya alcanzó su meta de recaudación.');
             } elseif (days_pass($promotion->created_at) > 60) {
                 throw new InvalidArgumentException('Esta promoción ya alcanzó su fecha de vencimiento (60 días).');
@@ -131,6 +130,14 @@ class PromotionHelpService
             $data['promotion_help_id'] = $id;
             $data['book_id'] = $book->id;
             $result = $this->PromotionHelpUserRepository->storePromotionHelpUser($data);
+
+            
+            $promotion_help_users_ids = $this->PromotionHelpUserRepository->getAll(['promotion_help_id' => $promotion->id, 'pluck' => 'user_id']);
+            $emails = $this->UserRepository->getAll(['user_id' => $promotion_help_users_ids , 'pluck' => 'email']);
+
+            if ($collected  >= $promotion->amount) {
+                event(new NewIdeasPromotionEvent($book->author, $emails));
+            }
         } catch (Exception $e) {
             DB::rollBack();
             Log::info($e->getMessage());

@@ -82,6 +82,24 @@ class User extends Authenticatable
     }
     
     /**
+     * Filter books by User id
+     *
+     * @var query Eloquent Query
+     * @var user_id   User Id
+     * @var strict Restriction flag
+     */
+    public function scopeFilterById($query, $user_id = null, $strict = false)
+    {
+        if (isset($user_id) || $strict) {
+            if (is_array($user_id)) {
+                return $query->whereIn('id', $user_id);
+            } else {
+                return $query->where('id', $user_id);
+            }
+        }
+        return $query;
+    }
+    /**
      * Filter users by role name or id.
      *
      * @var query Eloquent Query

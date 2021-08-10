@@ -27,7 +27,7 @@ class PromotionHelpRepository
      *
      * @return Collection $records
      */
-    public function getAll()
+    public function getAll($data = [])
     {
         $records = $this->promotionHelp->get();
         return $records;

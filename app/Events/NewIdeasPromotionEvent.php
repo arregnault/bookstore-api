@@ -45,7 +45,7 @@ class NewIdeasPromotionEvent
      */
     public function __construct($author, $emails)
     {
-        $this->user = Auth::user();
+        $this->user = $author;
         $this->author = $author;
         $this->emails = $emails;
         $this->type = 'Recaudación';

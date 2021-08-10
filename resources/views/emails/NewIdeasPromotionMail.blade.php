@@ -23,7 +23,7 @@
                                         </h2>
                                         <p style="margin: 0 0 10px 0; text-align: justify;padding: 1em;">
                                             Es nuestro deber informarle que la promoción de ayuda en financiamiento a las
-                                            nuevas ideas, del el autor {{ $data['author']->name }}, en la
+                                            nuevas ideas, del autor {{ $data['author']->name }}, en la
                                             que participó logró recaudar los fondos necesarios para llevar a acabo el
                                             proyecto. ¡Gracias por su apoyo!
                                         </p>
@@ -33,10 +33,10 @@
                         </table>
                     </div>
                     <!--[if mso]>
-                                                                </td>
-                                                                </tr>
-                                                                </table>
-                                                                <![endif]-->
+                                                                    </td>
+                                                                    </tr>
+                                                                    </table>
+                                                                    <![endif]-->
                 </td>
             </tr>
         </tbody>

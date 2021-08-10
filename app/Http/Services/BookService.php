@@ -231,6 +231,8 @@ class BookService
 
     public function pdfReportBooks()
     {
+        Log::info('Descargar reporte PDF');
+
         $data = [];
         $books = $this->BookRepository->getAll(['user_id' => auth()->user()->id, 'pluck' => 'id']);
         $reservations = $this->UserBookRepository->getAllWherIneBook('book_id', $books);
@@ -238,7 +240,6 @@ class BookService
         $data['author'] =  auth()->user();
 
         
-        // 'user_id' => auth()->user()->id ?? 1
         view()->share('data', $data);
         $pdf = PDF::loadView('pdf.authorBooksReport', $data);
 
