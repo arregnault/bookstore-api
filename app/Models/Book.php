@@ -26,6 +26,8 @@ class Book extends Model
         'year',
         'quantity',
         'user_id',
+        'discount',
+        'discount_ends_at'
     ];
 
     /**
@@ -34,14 +36,16 @@ class Book extends Model
      * @var array
      */
     protected $casts = [
-        'id'         => 'string',
-        'title'      => 'string',
-        'isbn'       => 'string',
-        'publisher'  => 'string',
-        'price'      => 'float',
-        'year'       => 'integer',
-        'quantity'   => 'integer',
-        'user_id'    => 'integer',
+        'id'                  => 'string',
+        'title'               => 'string',
+        'isbn'                => 'string',
+        'publisher'           => 'string',
+        'price'               => 'float',
+        'year'                => 'integer',
+        'quantity'            => 'integer',
+        'user_id'             => 'integer',
+        'discount'            => 'integer',
+        'discount_ends_at'    => 'date',
     ];
 
     protected $with = [];

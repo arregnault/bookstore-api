@@ -104,4 +104,23 @@ class BookRepository
 
         $record->delete();
     }
+
+    /**
+     * Update Book Discount Data
+     *
+     * @param array $data
+     * @param integer $id
+     * @return Book $record
+     */
+    public function discountBook($data, $id)
+    {
+        $record = $this->book::findOrFail($id);
+
+        $record->update([
+            'discount'           =>  $data['discount']          ?? $record->discount,
+            'discount_ends_at'   =>  $data['discount_ends_at']  ?? $record->discount_ends_at,
+        ]);
+
+        return $record->fresh();
+    }
 }

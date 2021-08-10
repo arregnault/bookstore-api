@@ -21,6 +21,8 @@ class CreateBooksTable extends Migration
             $table->decimal('price', 5, 2)->comment('Price');
             $table->integer('year')->comment('Year');
             $table->integer('quantity')->comment('Quantity for sale');
+            $table->integer('discount')->default(0)->comment('Discount');
+            $table->timestamp('discount_ends_at')->nullable()->comment('Ends Date');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade')->comment('Author');
             $table->timestamps();
         });

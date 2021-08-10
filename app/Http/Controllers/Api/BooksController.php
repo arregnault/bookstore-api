@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Books\BookStoreRequest;
 use App\Http\Requests\Books\BookUpdateRequest;
 use App\Http\Requests\Books\BookReservationRequest;
-
-
+use App\Http\Requests\Books\BookDiscountRequest;
 
 use App\Models\Book;
 use App\Http\Services\BookService;
@@ -130,6 +129,26 @@ class BooksController extends Controller
         $data = $request->only(['user_id']);
 
         $result = $this->BookService->reserveBook($data, $id);
+
+        return $this->successResponse($result);
+    }
+
+    /**
+     * Make discount of the specified resource in storage.
+     *
+     * @param  \App\Models\Book  $books
+     * @return \Illuminate\Http\Response
+     */
+    public function discount(BookDiscountRequest $request, $id)
+    {
+        $data = $request->only(['discount', 'discount_ends_at']);
+
+        $result = $this->BookService->discountBook($data, $id);
+
+        if ($result instanceof Book) {
+            $result = new BookResource($result);
+        }
+
 
         return $this->successResponse($result);
     }

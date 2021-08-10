@@ -164,18 +164,51 @@ class BookService
             $book = $this->BookRepository->showBook($id);
             $author = $this->UserRepository->showUser($book->user_id);
             $user = auth()->user();
+            $discount = 0;
 
-            $data['cost'] = $book->price;
+            if (strtotime($book->discount_ends_at) > strtotime('now')) {
+                $discount = $book->discount /  100;
+            }
+
+            $cost = $book->price - ($book->price * $discount);
+
+            $data['cost'] = $cost;
             $reservation = $this->UserBookRepository->storeReservation($data, $id);
+
             
             $this->BookRepository->updateBook(['quantity' => $book->quantity - 1], $id);
-            $this->UserRepository->updateUser(['account_balance' => $user->account_balance - $book->price], $user->id);
+            $this->UserRepository->updateUser(['account_balance' => $user->account_balance - $cost], $user->id);
 
             $result['reservation'] = $reservation;
             $result['user'] =   $user;
             $result['message'] = 'Reservación realizada con éxito.';
 
             event(new BoughtBookEvent($author, $book, $reservation));
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::info($e->getMessage());
+
+            throw new InvalidArgumentException($e->getMessage());
+        }
+        DB::commit();
+
+        return $result;
+    }
+
+    /**
+     * Make discount for a Book
+     *
+     * @param array $data
+     * @param integer $id
+     * @return String
+     */
+    public function discountBook($data, $id)
+    {
+        $result = null;
+        DB::beginTransaction();
+        Log::info('Hacer descuento en libro');
+        try {
+            $result =  $this->BookRepository->discountBook($data, $id);
         } catch (Exception $e) {
             DB::rollBack();
             Log::info($e->getMessage());
