@@ -60,7 +60,7 @@ class PromotionHelpService
      */
     public function getAll($data)
     {
-        Log::info('Obtener listado de libros');
+        Log::info('Obtener listado de promociones');
         return $this->PromotionHelpRepository->getAll($data);
     }
 

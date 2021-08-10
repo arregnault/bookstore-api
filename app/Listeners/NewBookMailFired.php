@@ -32,7 +32,7 @@ class NewBookMailFired
         $book   =  $event->book;
         $emails   =  $event->emails;
 
-        Mail::to($emails)->queue(new NewBookMail([
+        Mail::to($emails)->send(new NewBookMail([
             'author' => $user,
             'book' => $book,
         ]));

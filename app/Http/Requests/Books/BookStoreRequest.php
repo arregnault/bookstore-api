@@ -68,7 +68,7 @@ class BookStoreRequest extends FormRequest
             'isbn.min'                => ':attribute debe contener un mínimo de 10 carácteres.',
             'isbn.max'                => ':attribute debe contener un máximo de 13 carácteres',
             'publisher.min'           => ':attribute debe contener un mínimo de 3 carácteres.',
-            'publisher.max'           => ':attribute debe contener un máximo de 255 carácteres',
+            'publisher.max'           => ':attribute debe contener un máximo de 50 carácteres',
             'price.min'               => ':attribute debe tener un costo un mínimo de 1$.',
             'quantity.min'            => ':attribute debe ser de valor mínimo 0.',
             'year.min'                => ':attribute no debe ser menor a 1000.',

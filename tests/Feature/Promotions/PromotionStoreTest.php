@@ -1,60 +1,62 @@
 <?php
 
-namespace Tests\Feature\Books;
+namespace Tests\Feature\Promotions;
 
 use Illuminate\Support\Facades\DB;
 
 use Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
 use App\Models\User;
+use App\Models\PromotionHelp;
 
-use App\Models\Book;
 use Faker\Factory as Faker;
 
-class UpdateBookTest extends TestCase
+class PromotionStoreTest extends TestCase
 {
-
     /**
      * @test
-    */
-    public function can_update_record_test()
+     */
+    public function can_store_record_test()
     {
         DB::beginTransaction();
 
         $user = User::factory()->create();
         Sanctum::actingAs($user, ['*']);
-
         
-        $record = Book::factory()->create();
         $faker = Faker::create();
 
 
-        $response = $this->putJson(route('books.update', $record->getRouteKey()), [
+        $response = $this->postJson(route('promotion-help.store'), [
             'title' => $faker->sentence(random_int(1, 3)),
             'isbn' => $faker->unique()->isbn13(),
-            'publisher' => $faker->sentence(),
-            'year' => $faker->year(),
+            'publisher' => $faker->sentence(3),
+            'year' => random_int(date("Y"), 2500),
             'price' =>  random_int(1, 999),
-            'quantity' =>  random_int(1, 100),
+            'quantity' =>  random_int(0, 100),
+            'amount' =>  random_int(0, 100),
         ]);
-    
+
         $response->assertSuccessful();
+        PromotionHelp::find($response['data']['id'])->delete();
         DB::rollBack();
     }
+
     /**
      * @test
-    */
-    public function cant_update_record_test()
+     */
+    public function cant_store_record_test()
     {
         DB::beginTransaction();
 
         $user = User::factory()->create();
         Sanctum::actingAs($user, ['*']);
         
-        $record = Book::factory()->create();
+        $faker = Faker::create();
 
-        $response = $this->putJson(route('books.update', $record->getRouteKey()), []);
-    
+
+        $response = $this->postJson(route('promotion-help.store'), []);
+
+        
         $response->assertStatus(422);
 
         DB::rollBack();

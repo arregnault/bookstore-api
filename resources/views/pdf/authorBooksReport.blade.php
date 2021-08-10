@@ -29,6 +29,7 @@
                 @php
                     $price = 0;
                     $cost = 0;
+                    $count = 0;
                 @endphp
                 @foreach ($data['books'] ?? [] as $key => $item)
                     <tr>
@@ -41,11 +42,12 @@
                         @php
                             $price = $price + $item->book->price;
                             $cost = $cost + $item->cost;
+                            $count++;
                         @endphp
                 @endforeach
                 <tr class="table-warning">
                     <td scope="col"></td>
-                    <td scope="col">{{ $key + 1 }} Ventas</td>
+                    <td scope="col">{{ $count }} Ventas</td>
                     <td scope="col">${{ $price }}</td>
                     <td scope="col">${{ $cost }}</td>
                     <td scope="col"></td>

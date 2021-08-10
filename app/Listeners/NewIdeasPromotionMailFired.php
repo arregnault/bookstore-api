@@ -31,7 +31,7 @@ class NewIdeasPromotionMailFired
         $author =  $event->author;
         $emails   =  $event->emails;
 
-        Mail::to($emails)->queue(new NewIdeasPromotionMail([
+        Mail::to($emails)->send(new NewIdeasPromotionMail([
             'author' => $author,
         ]));
     }

@@ -11,13 +11,12 @@ use App\Models\User;
 use App\Models\Book;
 use Faker\Factory as Faker;
 
-class UpdateBookTest extends TestCase
+class DiscountTest extends TestCase
 {
-
     /**
      * @test
     */
-    public function can_update_record_test()
+    public function can_make_book_discount_test()
     {
         DB::beginTransaction();
 
@@ -26,16 +25,15 @@ class UpdateBookTest extends TestCase
 
         
         $record = Book::factory()->create();
+        $record->update(['user_id' => $user->id]);
+
         $faker = Faker::create();
 
+        $datetime = new \DateTime('tomorrow');
 
-        $response = $this->putJson(route('books.update', $record->getRouteKey()), [
-            'title' => $faker->sentence(random_int(1, 3)),
-            'isbn' => $faker->unique()->isbn13(),
-            'publisher' => $faker->sentence(),
-            'year' => $faker->year(),
-            'price' =>  random_int(1, 999),
-            'quantity' =>  random_int(1, 100),
+        $response = $this->postJson(route('books-discount', $record->getRouteKey()), [
+            'discount' =>  random_int(1, 100),
+            'discount_ends_at' =>  $datetime->format('Y-m-d'),
         ]);
     
         $response->assertSuccessful();
@@ -44,7 +42,7 @@ class UpdateBookTest extends TestCase
     /**
      * @test
     */
-    public function cant_update_record_test()
+    public function cant_make_book_discount_test()
     {
         DB::beginTransaction();
 
@@ -53,7 +51,7 @@ class UpdateBookTest extends TestCase
         
         $record = Book::factory()->create();
 
-        $response = $this->putJson(route('books.update', $record->getRouteKey()), []);
+        $response = $this->postJson(route('books-discount', $record->getRouteKey()), []);
     
         $response->assertStatus(422);
 

@@ -10,6 +10,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -51,9 +52,12 @@ class Handler extends ExceptionHandler
             return $this->errorResponse($message, $status);
         });
         $this->renderable(function (ModelNotFoundException $e, $request) {
-            $model = strtolower(class_basename($e->getModel()));
             Log::info($e->getMessage());
-            return $this->errorResponse("Does not exist any instance of {$model} with the given id", Response::HTTP_NOT_FOUND);
+            return $this->errorResponse("No existe ningún registro con ese identificador.", Response::HTTP_NOT_FOUND);
+        });
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            Log::info($e->getMessage());
+            return $this->errorResponse("No existe ningún registro con ese identificador.", Response::HTTP_NOT_FOUND);
         });
         $this->renderable(function (AuthorizationException $e, $request) {
             Log::info($e->getMessage());

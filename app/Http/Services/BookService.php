@@ -84,6 +84,7 @@ class BookService
                 'role' => 'reader',
                 'pluck' => 'email'
             ]);
+  
             event(new NewBookEvent($result, $emails));
         } catch (Exception $e) {
             DB::rollBack();
@@ -154,7 +155,7 @@ class BookService
             DB::rollBack();
             Log::info($e->getMessage());
 
-            throw new InvalidArgumentException($e->getMessage());
+            throw  $e;
         }
         DB::commit();
 
