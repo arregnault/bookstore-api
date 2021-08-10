@@ -26,12 +26,16 @@ class BooksController extends Controller
         $this->BookService = $BookService;
     }
 
-    
+
     /**
-     * Display a publishering of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Listado de libros
+    * [Obtener listado de libros y filtrarlos por nombre y orden]
+    * @authenticated
+    * @group  Libros
+    * @urlParam  title Nombre filtro del libro
+    * @urlParam  orderBy Orden por titulo (asc o desc)
+    */
+
     public function index(Request $request)
     {
         $data = $request->only(['title', 'orderBy']);
@@ -46,12 +50,19 @@ class BooksController extends Controller
         return $this->successResponse($result);
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    * Crear  libro
+    * [Creación de libro por parte de autor]
+    * @group  Libros
+    * @authenticated
+    * @bodyParam  title Título del libro
+    * @bodyParam isbn  ISBN
+    * @bodyParam publisher Editor
+    * @bodyParam price Precio
+    * @bodyParam year Año de Publicación
+    * @bodyParam quantity Existencias
+    */
     public function store(BookStoreRequest $request)
     {
         $data = $request->only([ 'title','isbn','publisher','price','year', 'quantity', 'user_id' ]);
@@ -69,11 +80,12 @@ class BooksController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Books  $books
-     * @return \Illuminate\Http\Response
-     */
+    * Obtener libro
+    * [Obtener informaciónde un libro según su id]
+    * @group  Libros
+    * @authenticated
+    * @urlParam  id Id del libro
+    */
     public function show($id)
     {
         $result = $this->BookService->showBook($id);
@@ -86,12 +98,18 @@ class BooksController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Book  $books
-     * @return \Illuminate\Http\Response
-     */
+    * Actualizar libro
+    * [Actualizar información de un libro según su id]
+    * @group  Libros
+    * @authenticated
+    * @urlParam  id Id del libro
+    * @bodyParam  title Título del libro
+    * @bodyParam isbn  ISBN
+    * @bodyParam publisher Editor
+    * @bodyParam price Precio
+    * @bodyParam year Año de Publicación
+    * @bodyParam quantity Existencias
+    */
     public function update(BookUpdateRequest $request, $id)
     {
         $data = $request->only(['title','isbn','publisher','price','year', 'quantity']);
@@ -105,12 +123,14 @@ class BooksController extends Controller
         return $this->successResponse($result);
     }
 
+    
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Book  $books
-     * @return \Illuminate\Http\Response
-     */
+    * Eliminar libro
+    * [Eliminar libro según su id]
+    * @group  Libros
+    * @authenticated
+    * @urlParam  id Id del libro
+    */
     public function destroy($id)
     {
         $result = $this->BookService->destroyBook($id);
@@ -118,12 +138,14 @@ class BooksController extends Controller
         return $this->successResponse($result);
     }
 
+    
     /**
-     * Make reservation of the specified resource in storage.
-     *
-     * @param  \App\Models\Book  $books
-     * @return \Illuminate\Http\Response
-     */
+    * Reservar libro
+    * [Un lector reserva un libro según su id]
+    * @group  Libros
+    * @authenticated
+    * @urlParam  id Id del libro
+    */
     public function reservation(BookReservationRequest $request, $id)
     {
         $data = $request->only(['user_id']);
@@ -133,12 +155,16 @@ class BooksController extends Controller
         return $this->successResponse($result);
     }
 
+        
     /**
-     * Make discount of the specified resource in storage.
-     *
-     * @param  \App\Models\Book  $books
-     * @return \Illuminate\Http\Response
-     */
+    * Crear descuento para libro
+    * [Un autor crea un descuento para un de sus libros según su id]
+    * @group  Libros
+    * @authenticated
+    * @urlParam  id Id del libro
+    * @bodyParam discount Porcentaje de descuento
+    * @bodyParam discount_ends_at Fecha de finalización del descuento
+    */
     public function discount(BookDiscountRequest $request, $id)
     {
         $data = $request->only(['discount', 'discount_ends_at']);
@@ -152,11 +178,13 @@ class BooksController extends Controller
 
         return $this->successResponse($result);
     }
+
     /**
-     * Generate PDF Report
-     *
-     * @return File
-     */
+    * Generar reporte de libros vendidos
+    * [Un autor solicita el reporte en pdf de sus libros vendidos]
+    * @group  Libros
+    * @authenticated
+    */
     public function pdfReport()
     {
         $result = $this->BookService->pdfReportBooks();

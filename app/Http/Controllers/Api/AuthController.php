@@ -24,7 +24,13 @@ class AuthController extends Controller
     */
     protected $token_word = 'Api Token Sanctum';
 
-
+    /**
+    * Inicar sesión
+    * [Un usuario accede al sistema indicado correo y contraseña]
+    * @group  Auth
+    * @bodyParam email Correo
+    * @bodyParam password Contraseña
+    */
     public function login(AuthLoginRequest $request)
     {
         $data = $request->only(['email', 'password']);
@@ -40,6 +46,12 @@ class AuthController extends Controller
     }
 
 
+    /**
+    * Consultar información personal
+    * [Un usuario solicita información sobre su cuenta, como número de trasacciones y blance actual en saldo]
+    * @group  Auth
+    * @authenticated
+    */
     public function me(Request $request)
     {
         $result = new UserProfileResource(auth()->user());
@@ -47,6 +59,12 @@ class AuthController extends Controller
     }
 
     
+    /**
+    * Listado de transacciones
+    * [Un usuario solicita la lista de trasacciones que ha llevado a cabo]
+    * @group  Auth
+    * @authenticated
+    */
     public function transactions(Request $request)
     {
         $result = TransactionLogResource::collection(auth()->user()->transactions);
@@ -55,6 +73,12 @@ class AuthController extends Controller
     }
 
 
+    /**
+    * Cerrar sesión
+    * [Un usuario su cierra sesión actual]
+    * @group  Auth
+    * @authenticated
+    */
     public function logout(Request $request)
     {
         auth()->user()->tokens()->delete();

@@ -1,22 +1,16 @@
 {
-    "name": "AcmeCorp Api documentation",
-    "version": "0.3.0",
-    "description": "Documentation for the REST api access provided at AcmeCorp",
-    "title": "Custom apiDoc browser title",
-    "url": "https://api.example.com",
-    "sampleUrl": "https://apidoc.free.beeceptor.com",
+    "name": "Bookstore Api documentation",
+    "version": "1",
+    "description": "Documentación de Sistema para la reservación de libros en una librería.",
+    "title": "Bookstore Api documentation",
     "header": {
-        "title": "Introduction",
+        "title": "Introducción",
         "filename": "header.md"
-    },
-    "footer": {
-        "title": "Best practices",
-        "filename": "footer.md"
     },
     "template": {
         "withCompare": true,
         "withGenerator": true,
         "aloneDisplay": false,
-        "theme-color": "#fcba03"
+        "theme-color": "#151548"
     }
 }

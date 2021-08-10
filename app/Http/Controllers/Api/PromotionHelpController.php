@@ -28,10 +28,11 @@ class PromotionHelpController extends Controller
 
     
     /**
-     * Display a publishering of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Listado de promociones de ayuda
+    * [Obtener listado de promociones de ayuda]
+    * @authenticated
+    * @group  Promociones
+    */
     public function index(Request $request)
     {
         $data = $request->all();
@@ -46,12 +47,20 @@ class PromotionHelpController extends Controller
         return $this->successResponse($result);
     }
 
+    
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  PromotionHelpStoreRequest  $request
-     * @return \Illuminate\Http\Response
-     */
+    * Crear  promoción
+    * [Creación de promoción de ayuda por parte de autor para publicar su libro a futuro]
+    * @group  Promociones
+    * @authenticated
+    * @bodyParam  title Título del libro
+    * @bodyParam isbn  ISBN
+    * @bodyParam publisher Editor
+    * @bodyParam price Precio
+    * @bodyParam year Año de Publicación
+    * @bodyParam quantity Existencias
+    * @bodyParam  amount Cantidad a recaudar
+    */
     public function store(PromotionHelpStoreRequest $request)
     {
         $data = $request->only([ 'amount', 'title','isbn','publisher','price','year', 'quantity', 'user_id' ]);
@@ -68,29 +77,16 @@ class PromotionHelpController extends Controller
         return $this->successResponse($result);
     }
 
+   
+    
     /**
-     * Display the specified resource.
-     *
-     * @param  integer  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $result = $this->PromotionHelpService->showPromotionHelp($id);
-
-        if ($result instanceof PromotionHelp) {
-            $result = new PromotionHelpResource($result);
-        }
-
-        return $this->successResponse($result);
-    }
-
-    /**
-     * Make donation to the specified resource in storage.
-     *
-     * @param  PromotionHelpDonationRequestt  $request
-     * @return \Illuminate\Http\Response
-     */
+    * Donar
+    * [Un lector hace un donación a una promoción de ayuda a las nuevas ideas]
+    * @group  Promociones
+    * @authenticated
+    * @urlParam  id Id de la promoción
+    * @bodyParam  amount Cantidad a donar
+    */
     public function donation(PromotionHelpDonationRequest $request, $id)
     {
         $data = $request->only(['user_id','amount']);
