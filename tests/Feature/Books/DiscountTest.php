@@ -21,6 +21,7 @@ class DiscountTest extends TestCase
         DB::beginTransaction();
 
         $user = User::factory()->create();
+        $user->update(['role_id' => 3]);
         Sanctum::actingAs($user, ['*']);
 
         
@@ -47,6 +48,7 @@ class DiscountTest extends TestCase
         DB::beginTransaction();
 
         $user = User::factory()->create();
+        $user->update(['role_id' => 3]);
         Sanctum::actingAs($user, ['*']);
         
         $record = Book::factory()->create();

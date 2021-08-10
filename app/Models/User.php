@@ -115,4 +115,9 @@ class User extends Authenticatable
         }
         return $query;
     }
+
+    public function hasRole($query, $roles = [])
+    {
+        return in_array($this->role->name, $roles);
+    }
 }

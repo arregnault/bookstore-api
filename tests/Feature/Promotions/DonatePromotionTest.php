@@ -23,6 +23,7 @@ class DonatePromotionTest extends TestCase
         DB::beginTransaction();
 
         $user = User::factory()->create();
+        $user->update(['role_id' => 2]);
         Sanctum::actingAs($user, ['*']);
 
         
@@ -47,6 +48,7 @@ class DonatePromotionTest extends TestCase
         DB::beginTransaction();
 
         $user = User::factory()->create();
+        $user->update(['role_id' => 2]);
         Sanctum::actingAs($user, ['*']);
         
         $record = PromotionHelp::factory()->create();

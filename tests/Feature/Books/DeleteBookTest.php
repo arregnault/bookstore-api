@@ -24,6 +24,7 @@ class DeleteBookTest extends TestCase
         $record = Book::factory()->create();
 
         $user = User::factory()->create();
+        $user->update(['role_id' => 3]);
         Sanctum::actingAs($user, ['*']);
 
 
@@ -47,6 +48,7 @@ class DeleteBookTest extends TestCase
         $record = Book::factory()->create();
         $record->delete();
         $user = User::factory()->create();
+        $user->update(['role_id' => 3]);
         Sanctum::actingAs($user, ['*']);
 
         $response = $this->delete(route('books.destroy', (integer) $record->getRouteKey() + 1));

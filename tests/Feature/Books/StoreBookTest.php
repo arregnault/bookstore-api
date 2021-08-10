@@ -23,6 +23,7 @@ class StoreBookTest extends TestCase
         DB::beginTransaction();
 
         $user = User::factory()->create();
+        $user->update(['role_id' => 3]);
         Sanctum::actingAs($user, ['*']);
         
         $faker = Faker::create();
@@ -51,6 +52,7 @@ class StoreBookTest extends TestCase
         DB::beginTransaction();
 
         $user = User::factory()->create();
+        $user->update(['role_id' => 3]);
         Sanctum::actingAs($user, ['*']);
         
         $faker = Faker::create();

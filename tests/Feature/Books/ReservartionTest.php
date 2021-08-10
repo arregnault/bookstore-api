@@ -23,7 +23,7 @@ class ReservartionTest extends TestCase
         $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
-        $user->update(['account_blance' => 999999]);
+        $user->update(['account_blance' => 999999, 'role_id' => 2]);
         Sanctum::actingAs($user, ['*']);
 
         
@@ -45,6 +45,7 @@ class ReservartionTest extends TestCase
         $record = Book::factory()->create();
 
         $user = User::factory()->create();
+        $user->update(['role_id' => 2]);
         Sanctum::actingAs($user, ['*']);
 
 
@@ -64,7 +65,7 @@ class ReservartionTest extends TestCase
         $record = Book::factory()->create();
 
         $user = User::factory()->create();
-        $user->update(['account_blance' => 0]);
+        $user->update(['account_blance' => 0, 'role_id' => 2]);
         Sanctum::actingAs($user, ['*']);
 
 
