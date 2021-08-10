@@ -14,6 +14,8 @@ use App\Http\Repositories\UserRepository;
 use App\Events\BoughtBookEvent;
 use App\Events\NewBookEvent;
 
+use PDF;
+
 class BookService
 {
     /**
@@ -217,5 +219,29 @@ class BookService
         DB::commit();
 
         return $result;
+    }
+
+    /**
+     * Generate PDF Report
+     *
+     * @param array $data
+     * @param integer $id
+     * @return String
+     */
+
+    public function pdfReportBooks()
+    {
+        $data = [];
+        $books = $this->BookRepository->getAll(['user_id' => auth()->user()->id, 'pluck' => 'id']);
+        $reservations = $this->UserBookRepository->getAllWherIneBook('book_id', $books);
+        $data['books'] =  $reservations;
+        $data['author'] =  auth()->user();
+
+        
+        // 'user_id' => auth()->user()->id ?? 1
+        view()->share('data', $data);
+        $pdf = PDF::loadView('pdf.authorBooksReport', $data);
+
+        return $pdf->download('pdfReportBooks.pdf');
     }
 }

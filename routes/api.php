@@ -22,6 +22,8 @@ use App\Http\Controllers\Api\PromotionHelpController;
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
 
+
+
 // Books
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('auth/me', [AuthController::class, 'me'])->name('me');
@@ -30,6 +32,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('books/reservation/{id}', [BooksController::class, 'reservation'])->name('books-reservation');
     Route::post('books/discount/{id}', [BooksController::class, 'discount'])->name('books-discount');
+    Route::get('books/report', [BooksController::class, 'pdfReport'])->name('books-report');
     Route::resource('books', BooksController::class, [ 'except' => ['create', 'edit'], ])->name('*', 'books');
 
     

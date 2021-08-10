@@ -50,4 +50,16 @@ class UserBookRepository
 
         return $record->fresh();
     }
+
+    
+    /**
+     * Get all records where in field array.
+     *
+     * @return Collection $records
+     */
+    public function getAllWherIneBook($field, $data)
+    {
+        $records = $this->userbook->with(['book', 'user'])->whereIn($field, $data)->get();
+        return $records;
+    }
 }

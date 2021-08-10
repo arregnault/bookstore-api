@@ -81,4 +81,19 @@ class Book extends Model
         }
         return $query;
     }
+    
+    /**
+     * Filter books by author id
+     *
+     * @var query Eloquent Query
+     * @var user_id   User Id
+     * @var strict Restriction flag
+     */
+    public function scopeFilterByUser($query, $user_id = null, $strict = false)
+    {
+        if (isset($user_id) || $strict) {
+            return $query->where('user_id', $user_id);
+        }
+        return $query;
+    }
 }

@@ -152,4 +152,15 @@ class BooksController extends Controller
 
         return $this->successResponse($result);
     }
+    /**
+     * Generate PDF Report
+     *
+     * @return File
+     */
+    public function pdfReport()
+    {
+        $result = $this->BookService->pdfReportBooks();
+
+        return $result;
+    }
 }

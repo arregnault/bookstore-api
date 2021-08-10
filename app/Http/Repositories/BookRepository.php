@@ -29,7 +29,13 @@ class BookRepository
      */
     public function getAll($data)
     {
-        $records = $this->book->filterByTitle($data['title'] ?? null)->orderBy('title', $data['orderBy'] ?? 'ASC')->get();
+        $records = $this->book->filterByTitle($data['title'] ?? null)->orderBy('title', $data['orderBy'] ?? 'ASC')
+                                ->filterByUser($data['user_id'] ?? null)
+                                ->when($data['pluck'] ?? null, function ($query, $pluck) {
+                                    return $query->pluck($pluck);
+                                }, function ($query) {
+                                    return $query->get();
+                                });
         return $records;
     }
 
