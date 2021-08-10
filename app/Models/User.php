@@ -21,7 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'balance',
         'account_balance',
         'role_id'
     ];
@@ -50,4 +49,31 @@ class User extends Authenticatable
         'role_id'           => 'integer',
         'email_verified_at' => 'datetime'
     ];
+
+    /**
+     * Get the role that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+    
+    /**
+     * Filter users by role name or id.
+     *
+     * @var query Eloquent Query
+     * @var role   User role name or id
+     * @var strict Restriction flag
+     */
+    public function scopeFilterByRole($query, $role = null, $strict = false)
+    {
+        if (isset($role) || $strict) {
+            return $query->whereHas('role', function ($query) use ($role) {
+                $query->where('name', $role)->orWhere('id', $role);
+            });
+        }
+        return $query;
+    }
 }

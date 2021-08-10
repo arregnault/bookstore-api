@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Log;
 
 use App\Http\Repositories\BookRepository;
 use App\Http\Repositories\UserBookRepository;
+use App\Http\Repositories\UserRepository;
+
+use App\Events\BoughtBookEvent;
+use App\Events\NewBookEvent;
+use App\Events\NewIdeasPromotionEvent;
 
 class BookService
 {
@@ -22,6 +27,11 @@ class BookService
     */
     protected $UserBookRepository;
 
+    /**
+     * @var $UserRepository
+    */
+    protected $UserRepository;
+
 
 
     /**
@@ -31,10 +41,11 @@ class BookService
      * @param UserBookRepository $UserBookRepository
      * @param UserRepository $UserRepository
      */
-    public function __construct(BookRepository $BookRepository, UserBookRepository $UserBookRepository)
+    public function __construct(BookRepository $BookRepository, UserBookRepository $UserBookRepository, UserRepository $UserRepository)
     {
         $this->BookRepository = $BookRepository;
         $this->UserBookRepository = $UserBookRepository;
+        $this->UserRepository = $UserRepository;
     }
 
     /**
@@ -60,6 +71,11 @@ class BookService
         Log::info('Crear libro');
         try {
             $result = $this->BookRepository->storeBook($data);
+            $emails = $this->UserRepository->getAll([
+                'role' => 'reader',
+                'pluck' => 'email'
+            ]);
+            event(new NewBookEvent($result, $emails));
         } catch (Exception $e) {
             DB::rollBack();
             Log::info($e->getMessage());
@@ -146,13 +162,20 @@ class BookService
         Log::info('Reservar libro');
         try {
             $book = $this->BookRepository->showBook($id);
+            $author = $this->UserRepository->showUser($book->user_id);
+            $user = auth()->user();
+
             $data['cost'] = $book->price;
             $reservation = $this->UserBookRepository->storeReservation($data, $id);
+            
             $this->BookRepository->updateBook(['quantity' => $book->quantity - 1], $id);
-            auth()->user()->update(['account_balance' => auth()->user()->account_balance - $book->price]);
+            $this->UserRepository->updateUser(['account_balance' => $user->account_balance - $book->price], $user->id);
+
             $result['reservation'] = $reservation;
-            $result['user'] =  auth()->user();
+            $result['user'] =   $user;
             $result['message'] = 'Reservación realizada con éxito.';
+
+            event(new BoughtBookEvent($author, $book, $reservation));
         } catch (Exception $e) {
             DB::rollBack();
             Log::info($e->getMessage());

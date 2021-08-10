@@ -7,6 +7,15 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
+use App\Events\BoughtBookEvent;
+use App\Events\NewBookEvent;
+use App\Events\NewIdeasPromotionEvent;
+
+use App\Listeners\BoughtBookMailFired;
+use App\Listeners\NewBookMailFired;
+use App\Listeners\NewIdeasPromotionMailFired;
+use App\Listeners\TransactionLog;
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -17,6 +26,18 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        BoughtBookEvent::class => [
+            BoughtBookMailFired::class,
+            TransactionLog::class,
+        ],
+        NewBookEvent::class => [
+            NewBookMailFired::class,
+            TransactionLog::class,
+        ],
+        NewIdeasPromotionEvent::class => [
+            NewIdeasPromotionMailFired::class,
+            TransactionLog::class,
         ],
     ];
 

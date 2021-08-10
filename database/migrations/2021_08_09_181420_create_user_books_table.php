@@ -16,7 +16,7 @@ class CreateUserBooksTable extends Migration
         Schema::create('user_books', function (Blueprint $table) {
             $table->id();
             $table->decimal('cost', 5, 2)->comment('Cost');
-            $table->foreignId('user_id')->constrained('roles')->onUpdate('cascade')->onDelete('cascade')->comment('User');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade')->comment('User');
             $table->foreignId('book_id')->constrained('books')->onUpdate('cascade')->onDelete('cascade')->comment('Book');
             $table->timestamps();
         });
