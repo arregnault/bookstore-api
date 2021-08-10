@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Event;
 use App\Events\BoughtBookEvent;
 use App\Events\NewBookEvent;
 use App\Events\NewIdeasPromotionEvent;
+use App\Events\DestroyBookEvent;
+use App\Events\LoginEvent;
+use App\Events\QueryBookEvent;
+use App\Events\UpdateBookEvent;
+
 
 use App\Listeners\BoughtBookMailFired;
 use App\Listeners\NewBookMailFired;
@@ -37,6 +42,18 @@ class EventServiceProvider extends ServiceProvider
         ],
         NewIdeasPromotionEvent::class => [
             NewIdeasPromotionMailFired::class,
+            TransactionLog::class,
+        ],
+        UpdateBookEvent::class => [
+            TransactionLog::class,
+        ],
+        LoginEvent::class => [
+            TransactionLog::class,
+        ],
+        QueryBookEvent::class => [
+            TransactionLog::class,
+        ],
+        DestroyBookEvent::class => [
             TransactionLog::class,
         ],
     ];

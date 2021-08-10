@@ -13,6 +13,12 @@ use App\Http\Repositories\UserRepository;
 
 use App\Events\BoughtBookEvent;
 use App\Events\NewBookEvent;
+use App\Events\DestroyBookEvent;
+use App\Events\LoginEvent;
+use App\Events\QueryBookEvent;
+use App\Events\UpdateBookEvent;
+
+
 
 use PDF;
 
@@ -57,6 +63,8 @@ class BookService
     public function getAll($data)
     {
         Log::info('Obtener listado de libros');
+        event(new QueryBookEvent());
+
         return $this->BookRepository->getAll($data);
     }
 
@@ -97,6 +105,8 @@ class BookService
     public function showBook($id)
     {
         Log::info('Obtener libro');
+        event(new QueryBookEvent());
+
         return $this->BookRepository->showBook($id);
     }
 
@@ -113,6 +123,7 @@ class BookService
         Log::info('Actualizar libro');
         try {
             $result = $this->BookRepository->updateBook($data, $id);
+            event(new UpdateBookEvent());
         } catch (Exception $e) {
             DB::rollBack();
             Log::info($e->getMessage());
@@ -138,6 +149,7 @@ class BookService
         try {
             $this->BookRepository->destroyBook($id);
             $result = 'Libro eliminado con éxito.';
+            event(new DestroyBookEvent());
         } catch (Exception $e) {
             DB::rollBack();
             Log::info($e->getMessage());
