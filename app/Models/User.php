@@ -59,6 +59,27 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
+
+    /**
+     * Get all of the transactions for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function transactions()
+    {
+        return $this->hasMany(TransactionLog::class, 'user_id', 'id');
+    }
+
+
+    /**
+     * Get all of the book reserved by the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function books()
+    {
+        return $this->hasManyThrough(Book::class, UserBook::class);
+    }
     
     /**
      * Filter users by role name or id.

@@ -23,6 +23,10 @@ Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
 // Books
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('auth/me', [AuthController::class, 'me'])->name('me');
+    Route::get('auth/transactions', [AuthController::class, 'transactions'])->name('transactions');
+
+
     Route::post('books/reservation/{id}', [BooksController::class, 'reservation'])->name('books-reservation');
     Route::resource('books', BooksController::class, [ 'except' => ['create', 'edit'], ])->name('*', 'books');
 });

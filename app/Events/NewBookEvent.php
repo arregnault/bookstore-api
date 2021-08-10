@@ -39,6 +39,11 @@ class NewBookEvent
     public $description;
 
     /**
+    * The id of book published
+    */
+    public $book_id;
+
+    /**
      * Create a new event instance.
      *
      * @return void
@@ -47,6 +52,7 @@ class NewBookEvent
     {
         $this->user = Auth::user();
         $this->book = $book;
+        $this->book_id = $book->id;
         $this->emails = $emails;
         $this->type = 'Publicación';
         $this->description = 'Un libro nuevo ha sido publicado.';

@@ -34,7 +34,7 @@ class TransactionLog extends Model
     protected $casts = [
         'id'            => 'string',
         'type'          => 'string',
-        'isbn'          => 'string',
+        'description'   => 'string',
         'user_book_id'  => 'string',
         'author_id'     => 'string',
         'user_id'       => 'string',
@@ -52,18 +52,19 @@ class TransactionLog extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'id', 'user_id');
     }
     
     /**
-     * Get the book associated with the TransactionLog (If any)
+     * Get the reservation associated with the TransactionLog (If any)
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function book()
+    public function reservation()
     {
-        return $this->hasOne(Book::class, 'user_book_id', 'id');
+        return $this->hasOne(UserBook::class, 'id', 'user_book_id');
     }
+    
 
     /**
      * Get the author associated with the TransactionLog (If any)
@@ -72,6 +73,6 @@ class TransactionLog extends Model
      */
     public function author()
     {
-        return $this->hasOne(User::class, 'author_id', 'id');
+        return $this->hasOne(User::class, 'id', 'author_id');
     }
 }

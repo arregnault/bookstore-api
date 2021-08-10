@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Traits\ApiResponse;
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserProfileResource;
+use App\Http\Resources\TransactionLogResource;
 
 class AuthController extends Controller
 {
@@ -40,7 +42,15 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
-        $result = new UserResource(auth()->user());
+        $result = new UserProfileResource(auth()->user());
+        return $this->successResponse($result);
+    }
+
+    
+    public function transactions(Request $request)
+    {
+        $result = TransactionLogResource::collection(auth()->user()->transactions);
+
         return $this->successResponse($result);
     }
 
