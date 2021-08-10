@@ -64,4 +64,21 @@ class Book extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    
+    
+    /**
+     * Filter books by title/name
+     *
+     * @var query Eloquent Query
+     * @var title   Book  title/name
+     * @var strict Restriction flag
+     */
+    public function scopeFilterByTitle($query, $title = null, $strict = false)
+    {
+        if (isset($title) || $strict) {
+            return $query->where('title', 'like', "%$title%");
+        }
+        return $query;
+    }
 }

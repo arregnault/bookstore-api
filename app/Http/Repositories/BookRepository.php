@@ -27,9 +27,9 @@ class BookRepository
      *
      * @return Collection $records
      */
-    public function getAll()
+    public function getAll($data)
     {
-        $records = $this->book->get();
+        $records = $this->book->filterByTitle($data['title'] ?? null)->orderBy('title', $data['orderBy'] ?? 'ASC')->get();
         return $records;
     }
 

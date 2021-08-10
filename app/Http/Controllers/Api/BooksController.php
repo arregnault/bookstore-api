@@ -34,7 +34,7 @@ class BooksController extends Controller
      */
     public function index(Request $request)
     {
-        $data = $request->all();
+        $data = $request->only(['title', 'orderBy']);
         $result = $this->BookService->getAll($data);
         
          
