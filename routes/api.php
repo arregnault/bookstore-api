@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BooksController;
+use App\Http\Controllers\Api\PromotionHelpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('books/reservation/{id}', [BooksController::class, 'reservation'])->name('books-reservation');
     Route::post('books/discount/{id}', [BooksController::class, 'discount'])->name('books-discount');
     Route::resource('books', BooksController::class, [ 'except' => ['create', 'edit'], ])->name('*', 'books');
+
+    
+    Route::resource('promotion-help', PromotionHelpController::class, [ 'except' => ['create', 'edit', 'update', 'destroy'], ])->name('*', 'promotion-help');
+    Route::post('promotion-help/donation/{id}', [PromotionHelpController::class, 'donation'])->name('promotion-help-donation');
 });

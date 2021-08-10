@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserBook extends Model
+class PromotionHelpUser extends Model
 {
     use HasFactory;
 
-    public $table = 'user_books';
+    public $table = 'promotion_help_users';
 
     protected $dates = ['created_at', 'update_at'];
 
@@ -19,9 +19,9 @@ class UserBook extends Model
      * @var array
      */
     protected $fillable = [
-        'cost',
+        'amount',
         'user_id',
-        'book_id',
+        'promotion_help_id',
     ];
 
     /**
@@ -30,10 +30,10 @@ class UserBook extends Model
      * @var array
      */
     protected $casts = [
-        'id'         => 'string',
-        'cost'       => 'float',
-        'user_id'    => 'integer',
-        'book_id'    => 'integer',
+        'id'                 => 'string',
+        'amount'               => 'float',
+        'user_id'            => 'integer',
+        'promotion_help_id'   => 'integer',
     ];
 
     protected $with = [];
@@ -57,8 +57,8 @@ class UserBook extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function book()
+    public function promotion()
     {
-        return $this->belongsTo(Book::class, 'book_id', 'id');
+        return $this->belongsTo(PromotionHelpUser::class, 'promotion_help_id', 'id');
     }
 }

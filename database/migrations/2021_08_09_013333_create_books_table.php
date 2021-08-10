@@ -23,6 +23,7 @@ class CreateBooksTable extends Migration
             $table->integer('quantity')->comment('Quantity for sale');
             $table->integer('discount')->default(0)->comment('Discount');
             $table->timestamp('discount_ends_at')->nullable()->comment('Ends Date');
+            $table->timestamp('is_active')->default(1)->comment('Active');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade')->comment('Author');
             $table->timestamps();
         });

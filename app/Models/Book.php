@@ -27,7 +27,8 @@ class Book extends Model
         'quantity',
         'user_id',
         'discount',
-        'discount_ends_at'
+        'discount_ends_at',
+        'is_active'
     ];
 
     /**
@@ -46,6 +47,7 @@ class Book extends Model
         'user_id'             => 'integer',
         'discount'            => 'integer',
         'discount_ends_at'    => 'date',
+        'is_active'           => 'boolean',
     ];
 
     protected $with = [];

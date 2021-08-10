@@ -13,7 +13,6 @@ use App\Http\Repositories\UserRepository;
 
 use App\Events\BoughtBookEvent;
 use App\Events\NewBookEvent;
-use App\Events\NewIdeasPromotionEvent;
 
 class BookService
 {
